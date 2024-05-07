@@ -12,6 +12,30 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 
+'''
+To enable and run these private keys run
+-- pip install python-dotenv
+Make sure you don't have the
+-- dotenv
+-- dotenv-python
+
+Remember, '.env' file with the pass, on  the root directory is required!
+'''
+
+from dotenv import load_dotenv
+import os
+
+# Carga las variables de entorno desde el archivo .env
+load_dotenv()
+
+keyLocal = os.environ['KeyLocal']
+keyServ = os.environ['KeyServer']
+keyCaptcha = os.environ['KeyCaptcha']
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.environ['SECRET_KEY']
+# Application definition
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -19,8 +43,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-gjym60k&p!p#8#l%^7o9#3lwr$h=s=gmzb&5wqxu0_crkk=nsl'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,6 +60,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'TechTestAPP',
 ]
 
 MIDDLEWARE = [
@@ -75,8 +99,13 @@ WSGI_APPLICATION = 'ArkencoTechTest.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'techtest_arkenco',                 # Replace with your desired database name
+        'USER': 'root',                     # Your username on MYSQL
+        'PASSWORD': keyLocal,                # Your password on MYSQL
+        'HOST': 'localhost',                # Host to setup the database
+        'PORT': '3306',                     # Specify your MySQL port
+        'AUTOCOMMIT': True,               # Enable auto-commit on BBDD
     }
 }
 
@@ -86,16 +115,12 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'OPTIONS': {
+            'min_length': 8,
+        }
+
+
     },
 ]
 
@@ -121,3 +146,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Auth Users:
+AUTH_USER_MODEL = 'TechTestAPP.Usuarios'
