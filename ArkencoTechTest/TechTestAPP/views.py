@@ -65,7 +65,6 @@ def custom_logout(request):
 
 # Registro de usuarios:
 def customRegistro(request):
-    print(request.user)
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
@@ -99,6 +98,7 @@ def home_view(request):
 # View Usuarios
 # 08-05-2024
 def users_view(request):
+    print(request.user.id)
     if(request.user.is_staff):
         # Si es Staff muestra todos los usuarios registrados en el sistema
         queryset = users.objects.all().order_by("date_joined")
@@ -114,19 +114,30 @@ def update_usuario(request, pk):
     user = get_object_or_404(Usuarios, pk=pk)
     if request.method == 'POST':
         form = UsuariosCrudForm(request.POST, instance=user)
+
         if form.is_valid():
             form.save()
+            messages.success(request,f"El usuario {user.username}  ha sido actualizado con éxito.")
             return redirect('/usuarios')
+        else:
+            messages.error(request,"El formulario no se encuentra completo, porfavor  revise e intente nuevamente.")
     else:
         form = UsuariosCrudForm(instance=user)
     return render(request, 'TechTest/update_usuario.html', {'form': form})
 
 # Delete USER
 def delete_usuario(request, pk):
+
     usuario = get_object_or_404(Usuarios, pk=pk)
     if request.method == 'POST':
-        usuario.delete()
-        return redirect('/')
+        ownPK = request.user.id
+        if ownPK==usuario.id:
+            messages.error(request,"No puedes eliminar tu propio perfil de usuario.")
+            return redirect("/usuarios")
+        else:
+            messages.success(request,f"Has eliminado a {usuario.username} exitosamente.")
+            usuario.delete()
+            return redirect('/usuarios')
     return render(request, 'TechTest/delete_usuario.html', {'usuario': usuario})
 '''
 Realizar un CRUD sobre los usuarios, esto siendo parte del STAFF, ningun otro miembro puede acceder

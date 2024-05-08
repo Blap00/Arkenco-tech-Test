@@ -16,12 +16,14 @@
         <a href="{% url 'TechTestAPP:registrar' %}">REGISTRAR USUARIO</a>
     </div>
 </div>
-<table>
+<table class="table table-dark table-striped-columns">
     <thead>
       <tr>
-        <th colspan="3">Acciones</th>
+        <th colspan="2">Acciones</th>
         <th>Nombre de Usuario</th>
-        <!-- Agrega otras columnas aquí si es necesario -->
+        <th>Email del Usuario</th>
+        <th>Nombre del usuario</th>
+        <th>Apellido del usuario</th>
       </tr>
     </thead>
     <tbody>
@@ -30,7 +32,9 @@
         <td><a href="{% url 'TechTestAPP:update_usuario' usuario.pk %}">Modificar</a></td>
         <td><a href="{% url 'TechTestAPP:delete_usuario' usuario.pk %}">Eliminar</a></td>
         <td>{{ usuario.username }}</td>
-        <!-- Puedes agregar otras columnas aquí si es necesario -->
+        <td>{{ usuario.email }}</td>
+        <td>{{ usuario.first_name }}</td>
+        <td>{{ usuario.last_name }}</td>
       </tr>
       {% endfor %}
     </tbody>
