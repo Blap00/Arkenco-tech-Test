@@ -8,7 +8,7 @@ from django.contrib.auth.forms import UserChangeForm
 from django import forms
 
 # Models Default
-from .models import Usuarios 
+from .models import Usuarios, cliente
 # USER LOGIN
 class UserLoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
@@ -95,3 +95,31 @@ class UsuariosCrudForm(UserChangeForm):
         field_names = ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']  # Define los nombres de los campos a actualizar
         for field_name in field_names:
             self.fields[field_name].widget.attrs.update({'class': 'form-control'})  # Aplica la clase 'form-control'
+
+
+# Clientes Formulario Añadir
+class ClientesCrudForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ClientesCrudForm, self).__init__(*args, **kwargs)
+        # Nombre_Empresa
+        self.fields['nombre_empresa'] = forms.CharField()
+        self.fields['nombre_empresa'].label ="Nombre de Empresa: "
+        self.fields['nombre_empresa'].widget.attrs.update({'class': 'form-control'})
+        # RUT
+        self.fields['rut'] = forms.CharField()
+        self.fields['rut'].label ="Digite RUT: "
+        self.fields['rut'].widget.attrs.update({'class': 'form-control', 'id':'id_rut'})
+        # Dirección        
+        self.fields['direccion'] = forms.CharField()
+        self.fields['direccion'].label= "Dirección de cliente: "
+        self.fields['direccion'].widget.attrs.update({'class': 'form-control'})
+        # Telefono
+        self.fields['telefono'] = forms.IntegerField()
+        self.fields['telefono'].label ="Ingrese su telefono: "
+        self.fields['telefono'].widget.attrs.update({'class': 'form-control'})
+    class Meta:
+            model=cliente
+            fields=('nombre_empresa',
+                    'rut',
+                    'direccion',
+                    'telefono')

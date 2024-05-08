@@ -8,7 +8,7 @@ from django.contrib import messages
 from .decorators import user_not_authenticated
 # Forms
 
-from .models import Usuarios as users
+from .models import Usuarios as users, cliente 
 from .forms import *
 
 
@@ -98,7 +98,6 @@ def home_view(request):
 # View Usuarios
 # 08-05-2024
 def users_view(request):
-    print(request.user.id)
     if(request.user.is_staff):
         # Si es Staff muestra todos los usuarios registrados en el sistema
         queryset = users.objects.all().order_by("date_joined")
@@ -139,6 +138,7 @@ def delete_usuario(request, pk):
             usuario.delete()
             return redirect('/usuarios')
     return render(request, 'TechTest/delete_usuario.html', {'usuario': usuario})
+
 '''
 Realizar un CRUD sobre los usuarios, esto siendo parte del STAFF, ningun otro miembro puede acceder
 Si ingresa fuera del rango sera automaticamente redirigido fuera del sitio al index,
@@ -148,6 +148,57 @@ Eliminar al usuario que el STAFF seleccione
 '''
 
 # View Clientes
+
+def clientes_view(request):
+    if(request.user.is_staff):
+        # Si es Staff muestra todos los usuarios registrados en el sistema
+        queryset = cliente.objects.all().order_by("id_cliente")
+        context = {
+            'Cliente': queryset,
+            }
+        return render(request,'TechTest/ClientesHTML/clientes.html', context)
+    else:
+        return redirect('/')
+
+# Añadir clientes
+def clientes_new(request):
+    if request.method == 'POST':
+        form = ClientesCrudForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request,f"El cliente ha sido creado con éxito.")
+            return redirect('/clientes')
+        else:
+            print(form.errors)
+            messages.error(request,"El formulario no se encuentra completo, porfavor revise e intente nuevamente.")
+    else:
+        form = ClientesCrudForm()
+    return render(request, 'TechTest/ClientesHTML/cliente_new.html', {'form': form})
+# Update Cliente
+def update_cliente(request, pk):
+    clientes = get_object_or_404(cliente, pk=pk)
+    if request.method == 'POST':
+        form = ClientesCrudForm(request.POST, instance=clientes)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request,f"El cliente {clientes.nombre_empresa}  ha sido actualizado con éxito.")
+            return redirect('/clientes')
+        else:
+            messages.error(request,"El formulario no se encuentra completo, porfavor  revise e intente nuevamente.")
+    else:
+        form = ClientesCrudForm(instance=clientes)
+    return render(request, 'TechTest/ClientesHTML/update_clientes.html', {'form': form})
+
+# Delete Cliente
+def delete_cliente(request, pk):
+
+    clientes = get_object_or_404(cliente, pk=pk)
+    if request.method == 'POST':
+        messages.success(request,f"Has eliminado a {clientes.nombre_empresa} exitosamente.")
+        clientes.delete()
+        return redirect('/clientes')
+    return render(request, 'TechTest/ClientesHTML/delete_cliente.html', {'clientes': clientes})
 
 '''
 Realizar un CRUD sobre los clientes registrados, esto siendo parte del STAFF, ningun otro miembro puede acceder

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Actualizar Usuario{% endblock %}
+{% block content %}
+  <h2>Actualizar Usuario</h2>
+  <form method="post">
+    {% csrf_token %}
+    <div class="grupo row">
+        <div class="col-6">
+            {{form.nombre_empresa.label}} * {{form.nombre_empresa}}
+            {% if form.nombre_empresa.errors %}
+            <div class="error">{{ form.nombre_empresa.errors|join:", " }}</div>
+            {% endif %}
+        </div>
+        <div class="col-6">
+            {{form.rut.label}} * {{form.rut}}
+            {% if form.rut.errors %}
+            <div class="error">{{ form.rut.errors|join:", " }}</div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="grupo row">
+        <div class="col-6">
+            {{form.direccion.label}} * {{form.direccion}}
+            {% if form.direccion.errors %}
+            <div class="error">{{ form.direccion.errors|join:", " }}</div>
+            {% endif %}
+        </div>
+        <div class="col-6">
+            {{form.telefono.label}} * {{form.telefono}}
+            {% if form.telefono.errors %}
+            <div class="error">{{ form.telefono.errors|join:", " }}</div>
+            {% endif %}
+        </div>
+    </div>
+    {% if form.non_field_errors %}
+    <div class="error">{{ form.non_field_errors|join:", " }}</div>
+    {% endif %}
+    <button type="submit">Actualizar</button>
+  </form>
+{% endblock %}

@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 class Usuarios(AbstractUser):
-    id= models.AutoField(primary_key= True)
+    id= models.BigAutoField(primary_key= True)
     username = models.CharField(unique=True, max_length=150)
     password = models.CharField(max_length=120, null=False)
     class Meta:

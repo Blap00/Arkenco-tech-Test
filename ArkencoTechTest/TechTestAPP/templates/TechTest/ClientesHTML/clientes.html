@@ -1,0 +1,43 @@
+<!--Usuarios HTML-->
+{% extends "base.html" %}
+{% block title %}Arkenco-clientes{% endblock %}
+{% block content %}
+{% load static %}
+<!-- comentarios sobre la prueba...
+
+    No veo necesario añadir o realizar el CREATE para esta lista, ya que existe el metodo del REGISTER ya implementado en el sistema...
+
+-->
+<div class="row">
+    <div class="col-6">
+        <h6>Registra al Cliente aquí:</h6>
+    </div>        
+    <div class="col-6">
+        <a href="{% url 'TechTestAPP:regCliente' %}">REGISTRAR CLIENTE</a>
+    </div>
+</div>
+<table class="table table-dark table-striped-columns">
+    <thead>
+      <tr>
+        <th colspan="2">Acciones</th>
+        <th>Nombre de Empresa</th>
+        <th>Rut</th>
+        <th>Direcci&oacute;n</th>
+        <th>Telefono</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for clientes in Cliente %}
+      <tr>
+        <td><a href="{% url 'TechTestAPP:update_cliente' clientes.pk %}">Modificar</a></td>
+        <td><a href="{% url 'TechTestAPP:delete_cliente' clientes.pk %}">Eliminar</a></td>
+        <td>{{ clientes.nombre_empresa }}</td>
+        <td>{{ clientes.rut }}</td>
+        <td>{{ clientes.direccion }}</td>
+        <td>{{ clientes.telefono }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock %}
