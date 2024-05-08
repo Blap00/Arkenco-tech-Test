@@ -1,5 +1,5 @@
 # Shortcuts from Django to render, redirect, etc...
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 # Decorators, if user is logged or not
 from django.contrib.auth.decorators import login_required
@@ -40,7 +40,7 @@ def loginUser(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f"Bienvenido <b>{user.username}</b>! Has iniciado sesión")
-                return redirect('../../')
+                return redirect('/')
             else:
                 pass
         else:
@@ -62,12 +62,72 @@ def custom_logout(request):
     logout(request)
     messages.info(request, "Logged out successfully!")
     return redirect('/')
+
+# Registro de usuarios:
+def customRegistro(request):
+    print(request.user)
+    if request.method == "POST":
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user= form.save()
+            if(request.user=="AnonymousUser"):
+                login(request, user)  # Remove this line
+                messages.success(request, f"New account created: {user.username}, succesfully logged")
+                return redirect('/')
+            elif(request.user.is_staff):
+                messages.success(request, f"New account created: {user.username}, succesfully registered")
+                return redirect('/usuarios')
+            else:
+                return redirect('/')
+            
+        else:
+            for error in list(form.errors.values()):
+                messages.error(request, error)
+    else:
+        form = CustomUserCreationForm()
+
+    return render(
+        request=request,
+        template_name="registration/registro.html",
+        context={"form": form}
+    )
 # Index
 def home_view(request):
     return render(request,'TechTest/index.html')
 
-# View Usuarios
 
+# View Usuarios
+# 08-05-2024
+def users_view(request):
+    if(request.user.is_staff):
+        # Si es Staff muestra todos los usuarios registrados en el sistema
+        queryset = users.objects.all().order_by("date_joined")
+        context = {
+            'Usuarios': queryset,
+            }
+        return render(request,'TechTest/Usuarios.html', context)
+    else:
+        return redirect('/')
+    
+# Update USER
+def update_usuario(request, pk):
+    user = get_object_or_404(Usuarios, pk=pk)
+    if request.method == 'POST':
+        form = UsuariosCrudForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('/usuarios')
+    else:
+        form = UsuariosCrudForm(instance=user)
+    return render(request, 'TechTest/update_usuario.html', {'form': form})
+
+# Delete USER
+def delete_usuario(request, pk):
+    usuario = get_object_or_404(Usuarios, pk=pk)
+    if request.method == 'POST':
+        usuario.delete()
+        return redirect('/')
+    return render(request, 'TechTest/delete_usuario.html', {'usuario': usuario})
 '''
 Realizar un CRUD sobre los usuarios, esto siendo parte del STAFF, ningun otro miembro puede acceder
 Si ingresa fuera del rango sera automaticamente redirigido fuera del sitio al index,

@@ -64,3 +64,30 @@ class CustomUserCreationForm(UserCreationForm):
             'last_name', 
             'password1', 
             'password2')
+
+# CRUD USUARIOS SITE:
+class UsuariosCrudForm(UserCreationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Accede al objeto de solicitud dentro del método __init__
+        if 'request' in kwargs:
+            self.request = kwargs.pop('request')
+        
+        # Add Username field
+        self.fields['username'] = forms.CharField()
+        self.fields['username'].label = "Nombre de usuario: "
+        self.fields['username'].widget.attrs.update({'class': 'form-control'})
+
+        # Add password1 field
+        self.fields['password1'] = forms.CharField(widget=forms.PasswordInput)
+        self.fields['password1'].label = "Contraseña: "
+        self.fields['password1'].widget.attrs.update({'class': 'form-control'})
+
+        # Add password2 field
+        self.fields['password2'] = forms.CharField(widget=forms.PasswordInput)
+        self.fields['password2'].label = "Repita la contraseña: "
+        self.fields['password2'].widget.attrs.update({'class': 'form-control'})
+    
+    class Meta(UserCreationForm.Meta):
+        model = Usuarios
+        fields = ('username', 'password1', 'password2')
