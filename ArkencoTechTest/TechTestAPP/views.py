@@ -144,6 +144,7 @@ Eliminar al usuario que el STAFF seleccione
 '''
 
 # View Clientes
+# 08-05-2024
 def clientes_view(request):
     if(request.user.is_staff):
         # Si es Staff muestra todos los usuarios registrados en el sistema
