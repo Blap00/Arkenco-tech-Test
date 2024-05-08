@@ -11,9 +11,6 @@ from .decorators import user_not_authenticated
 from .models import Usuarios as users, cliente 
 from .forms import *
 
-
-# Models
-
 # Create your views here.
 
 # Login
@@ -104,7 +101,7 @@ def users_view(request):
         context = {
             'Usuarios': queryset,
             }
-        return render(request,'TechTest/Usuarios.html', context)
+        return render(request,'TechTest/UsuariosHTML/Usuarios.html', context)
     else:
         return redirect('/')
     
@@ -122,11 +119,10 @@ def update_usuario(request, pk):
             messages.error(request,"El formulario no se encuentra completo, porfavor  revise e intente nuevamente.")
     else:
         form = UsuariosCrudForm(instance=user)
-    return render(request, 'TechTest/update_usuario.html', {'form': form})
+    return render(request, 'TechTest/UsuariosHTML/update_usuario.html', {'form': form})
 
 # Delete USER
 def delete_usuario(request, pk):
-
     usuario = get_object_or_404(Usuarios, pk=pk)
     if request.method == 'POST':
         ownPK = request.user.id
@@ -137,7 +133,7 @@ def delete_usuario(request, pk):
             messages.success(request,f"Has eliminado a {usuario.username} exitosamente.")
             usuario.delete()
             return redirect('/usuarios')
-    return render(request, 'TechTest/delete_usuario.html', {'usuario': usuario})
+    return render(request, 'TechTest/UsuariosHTML/delete_usuario.html', {'usuario': usuario})
 
 '''
 Realizar un CRUD sobre los usuarios, esto siendo parte del STAFF, ningun otro miembro puede acceder
@@ -148,7 +144,6 @@ Eliminar al usuario que el STAFF seleccione
 '''
 
 # View Clientes
-
 def clientes_view(request):
     if(request.user.is_staff):
         # Si es Staff muestra todos los usuarios registrados en el sistema
@@ -159,7 +154,6 @@ def clientes_view(request):
         return render(request,'TechTest/ClientesHTML/clientes.html', context)
     else:
         return redirect('/')
-
 # Añadir clientes
 def clientes_new(request):
     if request.method == 'POST':
@@ -189,7 +183,6 @@ def update_cliente(request, pk):
     else:
         form = ClientesCrudForm(instance=clientes)
     return render(request, 'TechTest/ClientesHTML/update_clientes.html', {'form': form})
-
 # Delete Cliente
 def delete_cliente(request, pk):
 
