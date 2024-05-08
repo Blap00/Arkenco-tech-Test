@@ -53,9 +53,9 @@ def loginUser(request):
     form = UserLoginForm()
     return render(
         request=request,
-        template_name="registration/login.html",
+        template_name="Registration/login.html",
         context={"form": form}
         )
 # Index
 def home_view(request):
-    return render(request,'index.html')
+    return render(request,'TechTest/index.html')

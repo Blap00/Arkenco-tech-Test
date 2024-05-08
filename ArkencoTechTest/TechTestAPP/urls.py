@@ -9,5 +9,5 @@ app_name = "TechTestAPP"
 urlpatterns = [
     path('', views.home_view, name="Home"),
     path('logout', views.home_view, name='logout'),
-    path('login', views.home_view, name='login'),
+    path('login', views.loginUser, name='login'),
 ]
