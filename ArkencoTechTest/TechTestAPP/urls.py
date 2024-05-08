@@ -8,6 +8,6 @@ from . import views
 app_name = "TechTestAPP"
 urlpatterns = [
     path('', views.home_view, name="Home"),
-    path('logout', views.home_view, name='logout'),
+    path('logout', views.custom_logout, name='logout'),
     path('login', views.loginUser, name='login'),
 ]
