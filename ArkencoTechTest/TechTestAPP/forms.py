@@ -197,3 +197,16 @@ class EstadosCrudForm(forms.ModelForm):
     class Meta:
             model=estado
             fields=('estado',)
+
+# Etapa Formulario Añadir
+class EtapaCrudForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(EtapaCrudForm, self).__init__(*args, **kwargs)
+        # Estado
+        self.fields['etapa'] = forms.CharField()
+        self.fields['etapa'].label ="Nombre de la etapa: "
+        self.fields['etapa'].widget.attrs.update({'class': 'form-control'})
+
+    class Meta:
+            model=etapa
+            fields=('etapa',)

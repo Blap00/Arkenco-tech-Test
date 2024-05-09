@@ -1,0 +1,35 @@
+<!--Etapas HTML-->
+{% extends "base.html" %}
+{% block title %}Arkenco-etapas{% endblock %}
+{% block content %}
+{% load static %}
+
+<div class="row">
+    <div class="col-6">
+        <h6>Registra la nueva etapa:</h6>
+    </div>        
+    <div class="col-6">
+        <a href="{% url 'TechTestAPP:regEtapas' %}">REGISTRAR ETAPA</a>
+    </div>
+</div>
+<table class="table table-dark table-striped-columns">
+    <thead>
+      <tr>
+        <th colspan="2">Acciones</th>
+        <th>ID de la Etapa</th>
+        <th>Etapa</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for etapa in Etapas %}
+      <tr>
+        <td><a href="{% url 'TechTestAPP:update_etapas' etapa.pk %}">Modificar</a></td>
+        <td><a href="{% url 'TechTestAPP:delete_etapas' etapa.pk %}">Eliminar</a></td>
+        <td>{{ etapa.id_etapa }}</td>
+        <td>{{ etapa.etapa }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock %}

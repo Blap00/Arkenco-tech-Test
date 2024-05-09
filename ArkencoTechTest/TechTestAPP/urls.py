@@ -30,5 +30,10 @@ urlpatterns = [
     path('estados/register', views.estado_new, name='regEstado'),
     path('estados/<int:pk>/update/', views.update_estado, name='update_estado'),
     path('estados/<int:pk>/delete/', views.delete_estado, name='delete_estado'),
+    # Etapas CRUD views
+    path('etapas', views.etapa_view, name='etapas'),
+    path('etapas/register', views.etapa_new, name='regEtapas'),
+    path('etapas/<int:pk>/update/', views.update_etapas, name='update_etapas'),
+    path('etapas/<int:pk>/delete/', views.delete_etapas, name='delete_etapas'),
 
 ]

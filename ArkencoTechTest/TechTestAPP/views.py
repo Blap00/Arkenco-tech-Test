@@ -10,7 +10,7 @@ from django.utils import timezone
 
 # Forms
 
-from .models import Usuarios as users, cliente, prospecto, estado
+from .models import Usuarios as users, cliente, prospecto, estado, etapa
 from .forms import *
 
 # Create your views here.
@@ -346,6 +346,52 @@ de registrar solo bajo su nombre
 '''
 
 # View Etapas
+# 09-05-2024
+# Index etapa
+def etapa_view(request):
+    # Si es Staff muestra todos los usuarios registrados en el sistema
+    queryset = etapa.objects.all().order_by("id_etapa")
+    context = {
+        'Etapas': queryset,
+    }
+    return render(request,'TechTest/EtapasHTML/etapas.html', context)
+# Create etapas
+def etapa_new(request):
+    if request.method == 'POST':
+        form = EtapaCrudForm(request.POST)
+        if form.is_valid():
+            # Guardar el formulario en la base de datos
+            form.save()
+            messages.success(request, "La Etapa ha sido creado con éxito.")
+            return redirect('/etapas')
+        else:
+            messages.error(request, "El formulario no se encuentra completo. Por favor, revise e intente nuevamente.")
+    else:
+        form = EtapaCrudForm()
+    return render(request, 'TechTest/EtapasHTML/etapas_new.html', {'form': form})
+# Update etapas
+def update_etapas(request, pk):
+    etapas = get_object_or_404(etapa, pk=pk)
+    if request.method == 'POST':
+        form = EtapaCrudForm(request.POST, instance=etapas)
+        if form.is_valid():
+            # Guardar el prospectos en la base de datos
+            form.save()
+            messages.success(request,f"La etapa {etapas.etapa}  ha sido actualizado con éxito.")
+            return redirect('/etapas')
+        else:
+            messages.error(request,"El formulario no se encuentra completo, porfavor  revise e intente nuevamente.")
+    else:
+        form = EtapaCrudForm(instance=etapas)
+    return render(request, 'TechTest/EtapasHTML/update_etapas.html', {'form': form})
+# Delete etapas
+def delete_etapas(request, pk):
+    etapas = get_object_or_404(etapa, pk=pk)
+    if request.method == 'POST':
+        messages.success(request,f"Has eliminado a {etapas.etapa} exitosamente.")
+        etapas.delete()
+        return redirect('/etapas')
+    return render(request, 'TechTest/EtapasHTML/delete_etapas.html', {'etapas': etapas})
 '''
 # revisar si se puede dejar solo a vista del STAFF
 Realizar un CRUD sobre los Etapas registrados, sin restriccion de acceso.
