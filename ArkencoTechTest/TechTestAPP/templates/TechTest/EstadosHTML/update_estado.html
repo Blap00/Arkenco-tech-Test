@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Actualizar Estado{% endblock %}
+{% block content %}
+<h2>Actualizar Estado</h2>
+<form action="" method="post">
+    {% csrf_token %}
+    <div class="grupo row">
+        <div class="col-6">
+            {{form.estado.label}} * {{form.estado}}
+            {% if form.estado.errors %}
+            <div class="error">{{ form.estado.errors|join:", " }}</div>
+            {% endif %}
+        </div>
+    </div>
+    {% if form.non_field_errors %}
+    <div class="error">{{ form.non_field_errors|join:", " }}</div>
+    {% endif %}
+    <button type="submit" class="registerbtn">Enviar</button>
+</form>
+{% endblock %}

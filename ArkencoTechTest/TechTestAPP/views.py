@@ -10,7 +10,7 @@ from django.utils import timezone
 
 # Forms
 
-from .models import Usuarios as users, cliente, prospecto
+from .models import Usuarios as users, cliente, prospecto, estado
 from .forms import *
 
 # Create your views here.
@@ -239,7 +239,42 @@ def prospecto_new(request):
             messages.error(request, "El formulario no se encuentra completo. Por favor, revise e intente nuevamente.")
     else:
         form = ProspectosCrudForm()
-    return render(request, 'ruta_de_tu_template.html', {'form': form})
+    return render(request, 'TechTest/ProspectosHTML/prospecto_new.html', {'form': form})
+# Update Prospecto
+def update_prospecto(request, pk):
+    prospectos = get_object_or_404(prospecto, pk=pk)
+    if request.method == 'POST':
+        form = ProspectosCrudForm(request.POST, instance=prospectos)
+        if form.is_valid():
+            # Guardar el formulario sin commit para poder manipular los datos antes de guardarlo en la base de datos
+            prospectos = form.save(commit=False)
+            
+            # Convertir el valor de 'fecha_ingreso' a un objeto de tipo 'date'
+            fecha_ingreso_date = form.cleaned_data['fecha_ingreso']
+            
+            # Convertir la fecha a una cadena en el formato deseado ('YYYY-MM-DD')
+            fecha_ingreso_str = fecha_ingreso_date.strftime('%Y-%m-%d')
+            
+            # Asignar la fecha convertida al objeto 'prospectos'
+            prospectos.fecha_ingreso = fecha_ingreso_str
+            
+            # Guardar el prospectos en la base de datos
+            prospectos.save()
+            messages.success(request,f"El prospecto {prospectos.nombre}  ha sido actualizado con éxito.")
+            return redirect('/prospectos')
+        else:
+            messages.error(request,"El formulario no se encuentra completo, porfavor  revise e intente nuevamente.")
+    else:
+        form = ProspectosCrudForm(instance=prospectos)
+    return render(request, 'TechTest/ProspectosHTML/update_prospecto.html', {'form': form})
+# Delete prospecto
+def delete_prospecto(request, pk):
+    prospectos = get_object_or_404(prospecto, pk=pk)
+    if request.method == 'POST':
+        messages.success(request,f"Has eliminado a {prospectos.nombre} exitosamente.")
+        prospectos.delete()
+        return redirect('/prospectos')
+    return render(request, 'TechTest/ProspectosHTML/delete_prospecto.html', {'prospectos': prospectos})
 
 '''
 Realizar un CRUD sobre los Prospectos registrados, sin restriccion de acceso.
@@ -252,6 +287,52 @@ de registrar solo bajo su nombre
 '''
 
 # View Estados
+# 09-05-2024
+# Index Estado
+def estado_view(request):
+    # Si es Staff muestra todos los usuarios registrados en el sistema
+    queryset = estado.objects.all().order_by("id_estado")
+    context = {
+        'Estados': queryset,
+    }
+    return render(request,'TechTest/EstadosHTML/estados.html', context)
+# Create Estado
+def estado_new(request):
+    if request.method == 'POST':
+        form = EstadosCrudForm(request.POST)
+        if form.is_valid():
+            # Guardar el formulario en la base de datos
+            form.save()
+            messages.success(request, "El Estado ha sido creado con éxito.")
+            return redirect('/estados')
+        else:
+            messages.error(request, "El formulario no se encuentra completo. Por favor, revise e intente nuevamente.")
+    else:
+        form = EstadosCrudForm()
+    return render(request, 'TechTest/EstadosHTML/estados_new.html', {'form': form})
+# Update Estado
+def update_estado(request, pk):
+    estados = get_object_or_404(estado, pk=pk)
+    if request.method == 'POST':
+        form = EstadosCrudForm(request.POST, instance=estados)
+        if form.is_valid():
+            # Guardar el prospectos en la base de datos
+            form.save()
+            messages.success(request,f"El estado {estados.estado}  ha sido actualizado con éxito.")
+            return redirect('/estados')
+        else:
+            messages.error(request,"El formulario no se encuentra completo, porfavor  revise e intente nuevamente.")
+    else:
+        form = EstadosCrudForm(instance=estados)
+    return render(request, 'TechTest/EstadosHTML/update_estado.html', {'form': form})
+# Delete Estado
+def delete_estado(request, pk):
+    estados = get_object_or_404(estado, pk=pk)
+    if request.method == 'POST':
+        messages.success(request,f"Has eliminado a {estados.estado} exitosamente.")
+        estados.delete()
+        return redirect('/estados')
+    return render(request, 'TechTest/ProspectosHTML/delete_prospecto.html', {'estados': estados})
 
 '''
 # revisar si se puede dejar solo a vista del STAFF

@@ -1,0 +1,39 @@
+<!--Usuarios HTML-->
+{% extends "base.html" %}
+{% block title %}Arkenco-prospectos{% endblock %}
+{% block content %}
+{% load static %}
+<!-- comentarios sobre la prueba...
+
+    No veo necesario añadir o realizar el CREATE para esta lista, ya que existe el metodo del REGISTER ya implementado en el sistema...
+
+-->
+<div class="row">
+    <div class="col-6">
+        <h6>Registra el nuevo estado aqui:</h6>
+    </div>        
+    <div class="col-6">
+        <a href="{% url 'TechTestAPP:regEstado' %}">REGISTRAR ESTADO</a>
+    </div>
+</div>
+<table class="table table-dark table-striped-columns">
+    <thead>
+      <tr>
+        <th colspan="2">Acciones</th>
+        <th>ID del Estado</th>
+        <th>Estado</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for estado in Estados %}
+      <tr>
+        <td><a href="{% url 'TechTestAPP:update_estado' estado.pk %}">Modificar</a></td>
+        <td><a href="{% url 'TechTestAPP:delete_estado' estado.pk %}">Eliminar</a></td>
+        <td>{{ estado.id_estado }}</td>
+        <td>{{ estado.estado }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock %}

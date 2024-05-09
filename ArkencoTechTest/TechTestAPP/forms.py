@@ -184,3 +184,16 @@ class ProspectosCrudForm(forms.ModelForm):
             widget=forms.Select(attrs={'class': 'form-control'})
         )
         self.fields['etapa_id'].label = "Etapa del Prospecto: "
+
+# Estado Formulario Añadir
+class EstadosCrudForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(EstadosCrudForm, self).__init__(*args, **kwargs)
+        # Estado
+        self.fields['estado'] = forms.CharField()
+        self.fields['estado'].label ="Nombre de estado: "
+        self.fields['estado'].widget.attrs.update({'class': 'form-control'})
+
+    class Meta:
+            model=estado
+            fields=('estado',)

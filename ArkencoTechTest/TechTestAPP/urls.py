@@ -22,8 +22,13 @@ urlpatterns = [
     path('clientes/<int:pk>/delete/', views.delete_cliente, name='delete_cliente'),
     # Prospectos CRUD views
     path('prospectos', views.prospectos_view, name='prospectos'),
-    path('prospectos/register', views.prospecto_new, name='regProspecto'),  # Agrega
-    # path('prospectos<int:pk>/update/', ),
-    # path('prospectos<int:pk>/update/', ),
+    path('prospectos/register', views.prospecto_new, name='regProspecto'),
+    path('prospectos/<int:pk>/update/', views.update_prospecto, name='update_prospecto'),
+    path('prospectos/<int:pk>/delete/', views.delete_prospecto, name='delete_prospecto'),
+    # Estados CRUD views
+    path('estados', views.estado_view, name='estados'),
+    path('estados/register', views.estado_new, name='regEstado'),
+    path('estados/<int:pk>/update/', views.update_estado, name='update_estado'),
+    path('estados/<int:pk>/delete/', views.delete_estado, name='delete_estado'),
 
 ]

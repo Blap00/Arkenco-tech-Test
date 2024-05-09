@@ -30,10 +30,9 @@
     </thead>
     <tbody>
       {% for prospectos in Prospecto %}
-      {# {% url 'TechTestAPP:update_usuario' usuario.pk %} #}
       <tr>  <!---->
-        <td><a href="#">Modificar</a></td>
-        <td><a href="#">Eliminar</a></td>
+        <td><a href="{% url 'TechTestAPP:update_prospecto' prospectos.pk %}">Modificar</a></td>
+        <td><a href="{% url 'TechTestAPP:delete_prospecto' prospectos.pk %}">Eliminar</a></td>
         <td>{{ prospectos.nombre }}</td>
         <td>{{ prospectos.email }}</td>
         <td>{{ prospectos.fecha_ingreso }}</td>
