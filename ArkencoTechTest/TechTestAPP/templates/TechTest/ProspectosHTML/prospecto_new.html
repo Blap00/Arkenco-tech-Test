@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block title %}Registro de cliente{% endblock %}
+{% block titulo %}Registro de cliente{% endblock %}
+{% block content %}
+{% load utils %}
+{% load static %}
+<link type="text/css" rel="stylesheet" href='{% static "css/register.css" %}'>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Función para agregar la clase g-col-6 a los elementos con la ID mencionada
+        function addClassToItems() {
+
+            var screenWidth = window.screen.width;
+            var items = document.querySelectorAll("[id^='formLoginRegister']");
+
+
+            if (screenWidth <= 992) {
+                // Si la pantalla es menor a 992px, eliminar la clase formLoginRegister a los elementos
+                items.forEach(function (item) {0
+                    item.classList.remove('formLoginRegister')
+                });
+            } else {
+                // Si la pantalla es mayor o igual a 992px, añadir la clase formLoginRegister de los elementos
+                items.forEach(function (item) {
+                    item.classList.add("formLoginRegister");
+                });
+            }
+        }
+
+        // Función para manejar el evento de cambio de tamaño de la ventana
+        function handleResizeEvent() {
+            // Llama a la función para agregar o eliminar la clase según el tamaño de la pantalla
+            addClassToItems();
+        }
+
+        // Registrar el evento de cambio de tamaño de la ventana
+        window.addEventListener("resize", handleResizeEvent);
+
+        // Llamar a la función inicialmente al cargar la página
+        addClassToItems();
+
+
+    });
+</script>
+
+<div class="loginRegister d-flex justify-content-center">
+    <main id="formLoginRegister" class="form-signin w-100 formLoginRegister">
+        <form action="" method="post">
+            <h1>Registrar Prospecto</h1>
+            {% csrf_token %}
+            <div class="grupo row">
+                <div class="col-6">
+                    {{form.nombre.label}} * {{form.nombre}}
+                    {% if form.nombre.errors %}
+                    <div class="error">{{ form.nombre.errors|join:", " }}</div>
+                    {% endif %}
+                </div>
+                <div class="col-6">
+                    {{form.email.label}} * {{form.email}}
+                    {% if form.email.errors %}
+                    <div class="error">{{ form.email.errors|join:", " }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="grupo row">
+                <div class="col-6">
+                    {{form.telefono.label}} * {{form.telefono}}
+                    {% if form.telefono.errors %}
+                    <div class="error">{{ form.telefono.errors|join:", " }}</div>
+                    {% endif %}
+                </div>
+                <div class="col-6">
+                    {{form.fecha_ingreso.label}} * {{form.fecha_ingreso}}
+                    {% if form.fecha_ingreso.errors %}
+                    <div class="error">{{ form.fecha_ingreso.errors|join:", " }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="grupo row">
+                <div class="col-6">
+                    {{form.sexo.label}} * {{form.sexo}}
+                    {% if form.sexo.errors %}
+                    <div class="error">{{ form.sexo.errors|join:", " }}</div>
+                    {% endif %}
+                </div>
+                <div class="col-6">
+                    {{form.cliente_id.label}} * {{form.cliente_id}}
+                    {% if form.cliente_id.errors %}
+                    <div class="error">{{ form.cliente_id.errors|join:", " }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="grupo row">
+                <div class="col-6">
+                    {{form.estado_id.label}} * {{form.estado_id}}
+                    {% if form.estado_id.errors %}
+                    <div class="error">{{ form.estado_id.errors|join:", " }}</div>
+                    {% endif %}
+                </div>
+                <div class="col-6">
+                    {{form.etapa_id.label}} * {{form.etapa_id}}
+                    {% if form.etapa_id.errors %}
+                    <div class="error">{{ form.etapa_id.errors|join:", " }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            {% if form.non_field_errors %}
+            <div class="error">{{ form.non_field_errors|join:", " }}</div>
+            {% endif %}
+            <button type="submit" class="registerbtn">Enviar</button>
+        </form>
+    </main>
+</div>
+{% endblock %}

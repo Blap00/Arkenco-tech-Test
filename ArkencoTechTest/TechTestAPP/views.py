@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from .decorators import user_not_authenticated
+from django.utils import timezone
+
 # Forms
 
 from .models import Usuarios as users, cliente, prospecto
@@ -204,6 +206,7 @@ Eliminar al cliente que el STAFF seleccione
 
 # View Prospectos
 # 08-05-2024
+# Index prospectos
 def prospectos_view(request):
     # Si es Staff muestra todos los usuarios registrados en el sistema
     queryset = prospecto.objects.all().order_by("id_prospecto")
@@ -211,7 +214,33 @@ def prospectos_view(request):
         'Prospecto': queryset,
     }
     return render(request,'TechTest/ProspectosHTML/prospectos.html', context)
-    
+# Create Prospectos
+def prospecto_new(request):
+    if request.method == 'POST':
+        form = ProspectosCrudForm(request.POST)
+        if form.is_valid():
+            # Guardar el formulario sin commit para poder manipular los datos antes de guardarlo en la base de datos
+            prospecto = form.save(commit=False)
+            
+            # Convertir el valor de 'fecha_ingreso' a un objeto de tipo 'date'
+            fecha_ingreso_date = form.cleaned_data['fecha_ingreso']
+            
+            # Convertir la fecha a una cadena en el formato deseado ('YYYY-MM-DD')
+            fecha_ingreso_str = fecha_ingreso_date.strftime('%Y-%m-%d')
+            
+            # Asignar la fecha convertida al objeto 'prospecto'
+            prospecto.fecha_ingreso = fecha_ingreso_str
+            
+            # Guardar el prospecto en la base de datos
+            prospecto.save()
+            messages.success(request, "El prospecto ha sido creado con éxito.")
+            return redirect('/prospectos')
+        else:
+            messages.error(request, "El formulario no se encuentra completo. Por favor, revise e intente nuevamente.")
+    else:
+        form = ProspectosCrudForm()
+    return render(request, 'ruta_de_tu_template.html', {'form': form})
+
 '''
 Realizar un CRUD sobre los Prospectos registrados, sin restriccion de acceso.
 Si ingresa fuera del rango de ingresado sera automaticamente redirigido fuera del sitio al index,

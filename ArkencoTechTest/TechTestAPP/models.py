@@ -52,7 +52,7 @@ class prospecto(models.Model):
     nombre = models.CharField(max_length=100)
     email = models.EmailField(max_length=100)
     telefono = models.CharField(max_length=100)
-    fecha_ingreso = models.DateField(auto_now=True)
+    fecha_ingreso = models.DateField()
     sexo = models.CharField(max_length=40,  choices=SexoFields)
     cliente_id = models.ForeignKey(cliente, on_delete=models.CASCADE)
     estado_id = models.ForeignKey(estado, on_delete=models.CASCADE)

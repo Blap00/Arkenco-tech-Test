@@ -8,7 +8,7 @@ from django.contrib.auth.forms import UserChangeForm
 from django import forms
 
 # Models Default
-from .models import Usuarios, cliente
+from .models import Usuarios, cliente, estado, etapa, prospecto
 # USER LOGIN
 class UserLoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
@@ -123,3 +123,64 @@ class ClientesCrudForm(forms.ModelForm):
                     'rut',
                     'direccion',
                     'telefono')
+
+# Prospectos Formulario Añadir
+class ProspectosCrudForm(forms.ModelForm):
+    class Meta:
+        model = prospecto
+        fields = ['nombre', 'email', 'telefono', 'sexo', 'cliente_id', 'estado_id', 'etapa_id']
+        widgets = {
+            'sexo': forms.Select(attrs={'class': 'form-control'}),
+            'cliente_id': forms.Select(attrs={'class': 'form-control'}),
+            'etapa_id': forms.Select(attrs={'class': 'form-control'}),
+            'estado_id': forms.Select(attrs={'class': 'form-control'}),
+            'fecha_ingreso': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'YYYY-MM-DD'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(ProspectosCrudForm, self).__init__(*args, **kwargs)
+        # nombre
+        self.fields['nombre'] = forms.CharField()
+        self.fields['nombre'].label ="Nombre del Prospecto: "
+        self.fields['nombre'].widget.attrs.update({'class': 'form-control'})
+        # email
+        self.fields['email'] = forms.EmailField()
+        self.fields['email'].label ="Email del Prospecto: "
+        self.fields['email'].widget.attrs.update({'class': 'form-control' })
+        # telefono        
+        self.fields['telefono'] = forms.IntegerField()
+        self.fields['telefono'].label= "Telefono del Prospecto: "
+        self.fields['telefono'].widget.attrs.update({'class': 'form-control'})
+        # fecha_ingreso
+        self.fields['fecha_ingreso'] = forms.DateField(
+            label="Ingrese la fecha de ingreso",
+            widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'})
+        )
+        # sexo
+        choices_sexo =[('', 'Sexo'), ('Male', 'Masculino'), ('Female', 'Femenino')]
+        self.fields['sexo'] = forms.ChoiceField(choices=choices_sexo)
+        self.fields['sexo'].label ="Sexo del prospecto: "
+        self.fields['sexo'].empty_label = "Seleccione el sexo: "
+        self.fields['sexo'].widget.attrs.update({'class': 'form-control'})
+        # cliente_id
+        self.fields['cliente_id'] = forms.ModelChoiceField(
+            queryset=cliente.objects.all(),
+            empty_label="Seleccione un cliente",
+            widget=forms.Select(attrs={'class': 'form-control'})
+        )
+        self.fields['cliente_id'].label = "Cliente del prospecto: "
+        # estado_id
+        self.fields['estado_id'] = forms.ModelChoiceField(
+            queryset=estado.objects.all(),
+            empty_label="Seleccione un estado",
+            widget=forms.Select(attrs={'class': 'form-control'})
+        )
+        self.fields['estado_id'].label = "Estado del prospecto: "
+
+        # etapa_id
+        self.fields['etapa_id'] = forms.ModelChoiceField(
+            queryset=etapa.objects.all(),
+            empty_label="Seleccione una etapa",
+            widget=forms.Select(attrs={'class': 'form-control'})
+        )
+        self.fields['etapa_id'].label = "Etapa del Prospecto: "

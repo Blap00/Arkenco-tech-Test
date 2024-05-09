@@ -22,7 +22,7 @@ urlpatterns = [
     path('clientes/<int:pk>/delete/', views.delete_cliente, name='delete_cliente'),
     # Prospectos CRUD views
     path('prospectos', views.prospectos_view, name='prospectos'),
-    # path('prospectos/register', ),
+    path('prospectos/register', views.prospecto_new, name='regProspecto'),  # Agrega
     # path('prospectos<int:pk>/update/', ),
     # path('prospectos<int:pk>/update/', ),
 
