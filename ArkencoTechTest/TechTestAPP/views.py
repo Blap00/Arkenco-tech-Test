@@ -8,7 +8,7 @@ from django.contrib import messages
 from .decorators import user_not_authenticated
 # Forms
 
-from .models import Usuarios as users, cliente 
+from .models import Usuarios as users, cliente, prospecto
 from .forms import *
 
 # Create your views here.
@@ -203,7 +203,15 @@ Eliminar al cliente que el STAFF seleccione
 '''
 
 # View Prospectos
-
+# 08-05-2024
+def prospectos_view(request):
+    # Si es Staff muestra todos los usuarios registrados en el sistema
+    queryset = prospecto.objects.all().order_by("id_prospecto")
+    context = {
+        'Prospecto': queryset,
+    }
+    return render(request,'TechTest/ProspectosHTML/prospectos.html', context)
+    
 '''
 Realizar un CRUD sobre los Prospectos registrados, sin restriccion de acceso.
 Si ingresa fuera del rango de ingresado sera automaticamente redirigido fuera del sitio al index,

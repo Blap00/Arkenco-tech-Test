@@ -20,4 +20,10 @@ urlpatterns = [
     path('clientes/register', views.clientes_new, name='regCliente'),
     path('clientes/<int:pk>/update/', views.update_cliente, name='update_cliente'),
     path('clientes/<int:pk>/delete/', views.delete_cliente, name='delete_cliente'),
+    # Prospectos CRUD views
+    path('prospectos', views.prospectos_view, name='prospectos'),
+    # path('prospectos/register', ),
+    # path('prospectos<int:pk>/update/', ),
+    # path('prospectos<int:pk>/update/', ),
+
 ]
