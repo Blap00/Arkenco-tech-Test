@@ -332,7 +332,7 @@ def delete_estado(request, pk):
         messages.success(request,f"Has eliminado a {estados.estado} exitosamente.")
         estados.delete()
         return redirect('/estados')
-    return render(request, 'TechTest/ProspectosHTML/delete_prospecto.html', {'estados': estados})
+    return render(request, 'TechTest/EstadosHTML/delete_estado.html', {'estados': estados})
 
 '''
 # revisar si se puede dejar solo a vista del STAFF
