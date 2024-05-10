@@ -6,12 +6,19 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # Set the working directory
-WORKDIR .
+WORKDIR /code
+
+# Print the current directory content
+RUN pwd
 
 # Install dependencies
-COPY requirements.txt . 
-# There I got failed to solve: failed to compute cache key: failed to calculate checksum of ref 28552fa7-6e0b-4be9-b170-d691089a4e40::ombhzk8emlo9rnkomm7rnjt1e: "/requirements.txt": not found
+COPY requeriments.txt .
 RUN pip install -r requirements.txt
 
 # Copy the project code into the container
 COPY . .
+
+# Expose the port
+EXPOSE 8000
+
+CMD ["python","manage.py","runserver"]
