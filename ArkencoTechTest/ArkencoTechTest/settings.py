@@ -98,15 +98,27 @@ WSGI_APPLICATION = 'ArkencoTechTest.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'techtest_arkenco',                 # Replace with your desired database name
+#         'USER': 'root',                     # Your username on MYSQL
+#         'PASSWORD': keyLocal,                # Your password on MYSQL
+#         'HOST': 'localhost',                # Host to setup the database
+#         'PORT': '3306',                     # Specify your MySQL port
+#         'AUTOCOMMIT': True,               # Enable auto-commit on BBDD
+#     }
+# }
+from decouple import config
+# Database
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'techtest_arkenco',                 # Replace with your desired database name
-        'USER': 'root',                     # Your username on MYSQL
-        'PASSWORD': keyLocal,                # Your password on MYSQL
-        'HOST': 'localhost',                # Host to setup the database
-        'PORT': '3306',                     # Specify your MySQL port
-        'AUTOCOMMIT': True,               # Enable auto-commit on BBDD
+        'NAME': config('MYSQL_DATABASE'),
+        'USER': config('MYSQL_USER'),
+        'PASSWORD': config('MYSQL_PASSWORD'),
+        'HOST': config('DB_HOST', 'db'),  # Use 'db' as default from .env
+        'PORT': config('DB_PORT', '3306'),  # Use '3306' as default from .env
     }
 }
 
