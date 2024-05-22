@@ -110,6 +110,11 @@ WSGI_APPLICATION = 'ArkencoTechTest.wsgi.application'
 #     }
 # }
 from decouple import config
+print("MYSQL_DATABASE:", config('MYSQL_DATABASE'))
+print("MYSQL_USER:", config('MYSQL_USER'))
+print("MYSQL_PASSWORD:", config('MYSQL_PASSWORD'))
+print("DB_HOST:", config('DB_HOST', 'db'))
+print("DB_PORT:", config('DB_PORT', default='3306'))
 # Database
 DATABASES = {
     'default': {
@@ -117,10 +122,11 @@ DATABASES = {
         'NAME': config('MYSQL_DATABASE'),
         'USER': config('MYSQL_USER'),
         'PASSWORD': config('MYSQL_PASSWORD'),
-        'HOST': config('DB_HOST', 'db'),  # Use 'db' as default from .env
-        'PORT': config('DB_PORT', '3306'),  # Use '3306' as default from .env
+        'HOST': 'db',  # Este es el nombre del servicio del contenedor MySQL
+        'PORT': '3306',
     }
 }
+
 
 
 # Password validation

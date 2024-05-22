@@ -8,17 +8,16 @@ ENV PYTHONUNBUFFERED 1
 # Set the working directory
 WORKDIR /code
 
-# Print the current directory content
-RUN pwd
-
 # Install dependencies
-COPY requeriments.txt .
-RUN pip install -r requirements.txt
+COPY ./requeriments.txt .
+RUN pip install -r requeriments.txt
 
 # Copy the project code into the container
 COPY . .
 
+
+
 # Expose the port
 EXPOSE 8000
 
-CMD ["python","manage.py","runserver"]
+CMD ["python","manage.py","makemigrations","python","manage.py","migrate","python","manage.py","runserver"]
